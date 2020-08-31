@@ -4,8 +4,8 @@ define([
 	"./buttons/ButtonDrawer",
 	"./buttons/ButtonImage",
 	"./buttons/ButtonImageToggle",
-	"./buttons/ButtonMenu",
 	"./buttons/ButtonText",
+	"./menus/ButtonMenu",
 	"./menus/ContextMenu",
 	"./menus/DropdownMenu"
 ],function(texts){

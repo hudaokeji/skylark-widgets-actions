@@ -21,7 +21,7 @@ define([
 			this.setColor(null, Editor.theme.buttonOverColor);
 		},
 
-		..ImageMixin
+		...ImageMixin
 
 	});
 

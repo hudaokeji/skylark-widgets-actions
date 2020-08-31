@@ -1,5 +1,5 @@
 define([
-	"skylark-langx-numbers/Vector2",
+	"skylark-langx-numerics/Vector2",
 	"skylark-widgets-base/Widget",
 	"./ButtonImage"
 ],function(
