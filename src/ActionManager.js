@@ -1,7 +1,7 @@
 define([
 	"skylark-langx/Evented",
-	"./base"
-], function(Evented,base){
+	"./actions"
+], function(Evented,actions){
 
 	var ActionManager = Evented.inherit({
 		"klassName"		:	"Manager",
@@ -21,7 +21,7 @@ define([
 
 	});
 
-	return base.ActionManager = ActionManager;
+	return actions.ActionManager = ActionManager;
 
 });
 

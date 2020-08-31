@@ -266,10 +266,12 @@ define('skylark-widgets-actions/buttons/ButtonImage',[
 define('skylark-widgets-actions/buttons/ButtonDrawer',[
 	"skylark-langx-numerics/Vector2",
 	"skylark-widgets-base/Widget",
+	"../actions",
 	"./ButtonImage"
 ],function(
 	Vector2,
-	Element,
+	Widget,
+	actions,
 	ButtonImage
 ){
 	"use strict";
@@ -299,36 +301,36 @@ define('skylark-widgets-actions/buttons/ButtonDrawer',[
 			this.panel.element.style.zIndex = "250";
 
 			/** 
-			 * List of the options in this panel.
+			 * List of the items in this panel.
 			 *
-			 * @attribute options
+			 * @attribute items
 			 * @type {Array}
 			 */
-			this.options = [];
+			this.items = [];
 
 			/**
-			 * Number of maximum options per row
+			 * Number of maximum items per row
 			 *
-			 * @attribute optionsPerLine
+			 * @attribute itemsPerLine
 			 * @type {Number}
 			 */
-			this.optionsPerLine = 3;
+			this.itemsPerLine = 3;
 			
 			/**
 			 * Size of each option, also affects the size of the panel.
 			 *
-			 * @attribute optionsSize
+			 * @attribute itemsSize
 			 * @type {Vector2}
 			 */
-			this.optionsSize = new Vector2(40, 40);
+			this.itemsSize = new Vector2(40, 40);
 
 			/**
-			 * Scale of the inner icon of the options created from the addOption() method.
+			 * Scale of the inner icon of the items created from the addItem() method.
 			 *
-			 * @attribute optionsScale
+			 * @attribute itemsScale
 			 * @type {Vector2}
 			 */
-			this.optionsScale = new Vector2(0.7, 0.7);
+			this.itemsScale = new Vector2(0.7, 0.7);
 
 			/**
 			 * Indicates if the button drawer panel is visible.
@@ -364,12 +366,12 @@ define('skylark-widgets-actions/buttons/ButtonDrawer',[
 
 
 		clear : function(){
-			for(var i = 0; i < this.options.length; i++)
+			for(var i = 0; i < this.items.length; i++)
 			{
-				this.options[i].destroy();
+				this.items[i].destroy();
 			}
 			
-			this.options = [];
+			this.items = [];
 		},
 
 		/**
@@ -386,24 +388,24 @@ define('skylark-widgets-actions/buttons/ButtonDrawer',[
 		/** 
 		 * Insert new option from already created element.
 		 *
-		 * @method insertOption
+		 * @method insertItem
 		 * @param {Widget} Widget of the option to be inserted in the drawer
 		 */
-		insertOption : function(element){
+		insertItem : function(element){
 			element.attachTo(this.panel);
-			this.options.push(element);
+			this.items.push(element);
 		},
 
 
 		/**
 		 * Add new option to the menu.
 		 * 
-		 * @method addOption
+		 * @method addItem
 		 * @param {String} image
 		 * @param {Function} callback
 		 * @param {String} altText
 		 */
-		addOption : function(image, callback, altText){
+		addItem : function(image, callback, altText){
 			var self = this;
 
 			var button = new ButtonImage(this.panel);
@@ -420,64 +422,91 @@ define('skylark-widgets-actions/buttons/ButtonDrawer',[
 				button.setAltText(altText);
 			}
 
-			this.options.push(button);
+			this.items.push(button);
 		},
 
 		/**
 		 * Remove an option from the menu.
 		 *
-		 * @method removeOption
+		 * @method removeItem
 		 * @param {Number} index
 		 */
-		removeOption : function(index) 	{
-			if(index >= 0 && index < this.options.length)
+		removeItem : function(index) 	{
+			if(index >= 0 && index < this.items.length)
 			{
-				this.options[index].destroy();
-				this.options.splice(index, 1);
+				this.items[index].destroy();
+				this.items.splice(index, 1);
 			}
 		},
 
 		/**
-		 * Updates drawer panel size based on the number of options available.
+		 * Updates drawer panel size based on the number of items available.
 		 * 
 		 * @method updatePanelSize
 		 */
-		_updatePanelSize : function()	{
-			var optionsPerLine = (this.options.length < this.optionsPerLine) ? this.options.length : this.optionsPerLine;
+		updatePanelSize : function()	{
+			var itemsPerLine = (this.items.length < this.itemsPerLine) ? this.items.length : this.itemsPerLine;
 
-			this.panel.size.x = (this.optionsSize.x * optionsPerLine);
-			this.panel.size.y = (this.optionsSize.y * (Math.floor((this.options.length - 1) / optionsPerLine) + 1));
+			this.panel.size.x = (this.itemsSize.x * itemsPerLine);
+			this.panel.size.y = (this.itemsSize.y * (Math.floor((this.items.length - 1) / itemsPerLine) + 1));
 			this.panel.updateSize();
 
-			this.panel.position.set(this.optionsSize.x, 0);
+			this.panel.position.set(this.itemsSize.x, 0);
 			this.panel.updatePosition();
 		},
 
 		/**
-		 * Update drawer options position and size.
+		 * Update drawer items position and size.
 		 *
-		 * Should be called after change in options displacement variables).
+		 * Should be called after change in items displacement variables).
 		 *
-		 * @method updateOptions
+		 * @method updateItems
 		 */
-		_updateOptions : function()	{
+		updateItems : function()	{
 			this.updatePanelSize();
 
-			var optionsPerLine = (this.options.length < this.optionsPerLine) ? this.options.length : this.optionsPerLine;
+			var itemsPerLine = (this.items.length < this.itemsPerLine) ? this.items.length : this.itemsPerLine;
 
-			for(var i = 0; i < this.options.length; i++)
+			for(var i = 0; i < this.items.length; i++)
 			{
-				this.options[i].size.set(this.optionsSize.x, this.optionsSize.y);
-				this.options[i].position.x = this.optionsSize.x * (i % optionsPerLine);
-				this.options[i].position.y = this.optionsSize.y * Math.floor(i / optionsPerLine);
-				this.options[i].updateInterface();
+				this.items[i].size.set(this.itemsSize.x, this.itemsSize.y);
+				this.items[i].position.x = this.itemsSize.x * (i % itemsPerLine);
+				this.items[i].position.y = this.itemsSize.y * Math.floor(i / itemsPerLine);
+				this.items[i].updateInterface();
 			}
 		},
 
-		_updateVisibility : function()	{
+		updateVisibility : function()	{
 			this._elm.style.display = this.visible ? "block" : "none";
+		},
+
+
+		optionsSize : {
+			get : function() {
+				return this.itemsSize;
+			},
+
+			set : function(v) {
+				this.itemsSize = v
+			}
+		},
+
+		optionsPerLine : {
+			get : function() {
+				return this.itemsPerLine;
+			},
+
+			set : function(v) {
+				this.itemsPerLine = v
+			}
 		}
 	});
+
+	
+	ButtonDrawer.prototype.addOption = ButtonDrawer.prototype.addItem;
+	ButtonDrawer.prototype.insertOption = ButtonDrawer.prototype.insertItem;
+	ButtonDrawer.prototype.updateOptions = ButtonDrawer.prototype.updateItems;
+	ButtonDrawer.prototype.removeOption = ButtonDrawer.prototype.reomveItem;
 
 
 	return actions.buttons.ButtonDrawer = ButtonDrawer;
@@ -835,7 +864,7 @@ define('skylark-widgets-actions/buttons/ButtonText',[
 			this.setAlignment(TextMixin.CENTER);
 			*/
 
-			this._buildTextSpan();
+			this._buildText();
 
 			//this.setColor(Editor.theme.buttonColor, Editor.theme.buttonOverColor);
 			this.setColor(skin.buttonColor, skin.buttonOverColor);
@@ -943,7 +972,7 @@ define('skylark-widgets-actions/menus/DropdownMenu',[
 		_construct : function (parent) {
 			Widget.prototype._construct.call(this, parent, "div");
 
-			this._buildTextSpan();
+			this._buildText();
 
 
 			this._elm.style.backgroundColor = Editor.theme.buttonColor;
@@ -953,7 +982,7 @@ define('skylark-widgets-actions/menus/DropdownMenu',[
 			this.preventDragEvents();
 
 			/**
-			 * Panel element, where the options are stored.
+			 * Panel element, where the items are stored.
 			 *
 			 * This DOM element is added directly to the parent DOM element.
 			 *
@@ -1004,17 +1033,17 @@ define('skylark-widgets-actions/menus/DropdownMenu',[
 			 * @type {Boolean}
 			 */
 			this.expanded = false;
-			this.optionsSize = new Vector2(150, 20);
+			this.itemsSize = new Vector2(150, 20);
 
 			/**
-			 * Options available in the dropdown.
+			 * Items available in the dropdown.
 			 *
-			 * Options are stored as: {button:button, value:object, name:string}
+			 * Items are stored as: {button:button, value:object, name:string}
 			 *
-			 * @attribute options
+			 * @attribute items
 			 * @type {Array}
 			 */
-			this.options = [];
+			this.items = [];
 
 			var self = this;
 
@@ -1043,7 +1072,7 @@ define('skylark-widgets-actions/menus/DropdownMenu',[
 		},
 
 		/**
-		 * Set location to where options should open.
+		 * Set location to where items should open.
 		 *
 		 * @method setDirection
 		 */
@@ -1088,9 +1117,9 @@ define('skylark-widgets-actions/menus/DropdownMenu',[
 		 * @param {Number} index
 		 */
 		removeOption : function(index) {
-			if(index >= 0 && index < this.options.length) {
-				this.options[index].destroy();
-				this.options.splice(index, 1);
+			if(index >= 0 && index < this.items.length) {
+				this.items[index].destroy();
+				this.items.splice(index, 1);
 			}
 		},
 
@@ -1120,7 +1149,7 @@ define('skylark-widgets-actions/menus/DropdownMenu',[
 				button.setIcon(icon);
 			}
 
-			this.options.push(button);
+			this.items.push(button);
 
 			return button;
 		},
@@ -1146,13 +1175,13 @@ define('skylark-widgets-actions/menus/DropdownMenu',[
 				menu.setIcon(icon);
 			}
 
-			this.options.push(menu);
+			this.items.push(menu);
 
 			return menu;
 		},
 
 		/** 
-		 * Update expanded state, position all options in this dropdown.
+		 * Update expanded state, position all items in this dropdown.
 		 * 
 		 * @method setExpanded
 		 * @param {Boolean} expanded If true the menu will be expanded.
@@ -1168,7 +1197,7 @@ define('skylark-widgets-actions/menus/DropdownMenu',[
 					this.panel._elm.style.left = this.position.x + "px";
 
 					//var out = DOMUtils.checkBorder(this.panel);
-					var out = geom.testAsis(this.panel);
+					var out = geom.testAxis(this.panel);
 
 					if(out.y !== 0)	{
 						this.panel._elm.style.top = null;
@@ -1182,7 +1211,7 @@ define('skylark-widgets-actions/menus/DropdownMenu',[
 					this.panel._elm.style.left = this.position.x + "px";
 
 					//var out = DOMUtils.checkBorder(this.panel);
-					var out = geom.testAsis(this.panel);
+					var out = geom.testAxis(this.panel);
 					if(out.y !== 0)
 					{
 						this.panel._elm.style.bottom = null;
@@ -1199,7 +1228,7 @@ define('skylark-widgets-actions/menus/DropdownMenu',[
 					this.panel._elm.style.left = (this.position.x + this.size.x) + "px";
 
 					//var out = DOMUtils.checkBorder(this.panel);
-					var out = geom.testAsis(this.panel);
+					var out = geom.testAxis(this.panel);
 					if(out.x !== 0)
 					{
 						this.panel._elm.style.left = (this.position.x - this.size.x) + "px"; 
@@ -1215,7 +1244,7 @@ define('skylark-widgets-actions/menus/DropdownMenu',[
 					this.panel._elm.style.left = (this.position.x - this.size.x) + "px";
 
 					//var out = DOMUtils.checkBorder(this.panel);
-					var out = geom.testAsis(this.panel);
+					var out = geom.testAxis(this.panel);
 					if(out.x !== 0)
 					{
 						this.panel._elm.style.left = (this.position.x + this.size.x) + "px";
@@ -1231,19 +1260,19 @@ define('skylark-widgets-actions/menus/DropdownMenu',[
 		},
 
 		/**
-		 * Update all options in the menu.
+		 * Update all items in the menu.
 		 * 
-		 * @method updateOptions
+		 * @method updateItems
 		 */
-		updateOptions : function() {
-			for(var i = 0; i < this.options.length; i++) {
-				this.options[i].size.set(this.optionsSize.x, this.optionsSize.y);
-				this.options[i].position.set(0, this.optionsSize.y * i);
-				this.options[i].updateInterface();
+		updateItems : function() {
+			for(var i = 0; i < this.items.length; i++) {
+				this.items[i].size.set(this.itemsSize.x, this.itemsSize.y);
+				this.items[i].position.set(0, this.itemsSize.y * i);
+				this.items[i].updateInterface();
 			}
 
 			this.panel._elm.style.width = this.size.x + "px";
-			this.panel._elm.style.height = (this.optionsSize.y * this.options.length) + "px";
+			this.panel._elm.style.height = (this.itemsSize.y * this.items.length) + "px";
 		},
 
 		destroy : function() {
@@ -1255,7 +1284,7 @@ define('skylark-widgets-actions/menus/DropdownMenu',[
 		updateSize : function() {
 //			Text.prototype.updateSize.call(this);
 
-			this.updateOptions();
+			this.updateItems();
 		},
 
 
@@ -1314,12 +1343,12 @@ define('skylark-widgets-actions/menus/ContextMenu',[
 			this.offset = new Vector2(20, 10);
 			
 			/**
-			 * Options in this menu.
+			 * Items in this menu.
 			 * 
-			 * @attribute options
+			 * @attribute items
 			 * @type {Array}
 			 */
-			this.options = [];
+			this.items = [];
 		},
 
 
@@ -1334,26 +1363,26 @@ define('skylark-widgets-actions/menus/ContextMenu',[
 		},
 
 		/**
-		 * Remove option from context menu.
+		 * Remove item from context menu.
 		 *
-		 * @method removeOption
+		 * @method removeItem
 		 * @param {Number} index
 		 */
-		removeOption : function(index) {
-			if(index >= 0 && index < this.options.length)	{
-				this.options[index].destroy();
-				this.options.splice(index, 1);
+		removeItem : function(index) {
+			if(index >= 0 && index < this.items.length)	{
+				this.items[index].destroy();
+				this.items.splice(index, 1);
 			}
 		},
 
 		/**
-		 * Add new option to context menu
+		 * Add new item to context menu
 		 *
-		 * @method addOption
-		 * @param {String} name of the option
+		 * @method addItem
+		 * @param {String} name of the item
 		 * @param {Function} callback Callback function
 		 */
-		addOption : function(name, callback) {
+		addItem : function(name, callback) {
 			var button = new ButtonMenu(this);
 			button._elm.style.zIndex = "10000";
 			button.setText(name);
@@ -1366,14 +1395,14 @@ define('skylark-widgets-actions/menus/ContextMenu',[
 				self.destroy();
 			});
 
-			this.options.push(button);
+			this.items.push(button);
 		},
 
 		/**
 		 * Add new menu to context menu
 		 *
-		 * @method addOption
-		 * @param {String} name of the option.
+		 * @method addItem
+		 * @param {String} name of the item.
 		 * @return {DropdownMenu} The new menu created.
 		 */
 		addMenu : function(name) {
@@ -1384,30 +1413,30 @@ define('skylark-widgets-actions/menus/ContextMenu',[
 			menu.setAlignment(Text.LEFT);
 			menu.setMargin(25);
 
-			this.options.push(menu);
+			this.items.push(menu);
 
 			return menu;
 		},
 
 		/**
-		 * Update all options in the menu.
+		 * Update all items in the menu.
 		 * 
-		 * @method updateOptions
+		 * @method updateItems
 		 */
-		updateOptions : function() {
-			for(var i = 0; i < this.options.length; i++)
+		updateItems : function() {
+			for(var i = 0; i < this.items.length; i++)
 			{
-				this.options[i].size.copy(this.size);
-				this.options[i].position.set(0, this.size.y * i);
-				this.options[i].updateInterface();
+				this.items[i].size.copy(this.size);
+				this.items[i].position.set(0, this.size.y * i);
+				this.items[i].updateInterface();
 			}
 		},
 
 		updateSize : function()	{
 			this._elm.style.width = this.size.x + "px";
-			this._elm.style.height = (this.size.y * this.options.length) + "px";
+			this._elm.style.height = (this.size.y * this.items.length) + "px";
 
-			this.updateOptions();
+			this.updateItems();
 		},
 
 		updatePosition : function() {

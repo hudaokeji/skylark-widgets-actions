@@ -2,9 +2,9 @@ define([
 	"skylark-langx/objects",
 	"skylark-langx/Evented",
 	"skylark-data-collection/HashMap",
-	"./base",
+	"./actions",
 	"./ActionManager"
-], function(objects,Evented, HashMap, base, ActiionManager){
+], function(objects,Evented, HashMap, actions, ActiionManager){
 
 	var Action = Evented.inherit({
 		"klassName" : "Action",
@@ -56,7 +56,7 @@ define([
 
 	});
 	
-	return base.Action = Action;
+	return actions.Action = Action;
 });
 
 

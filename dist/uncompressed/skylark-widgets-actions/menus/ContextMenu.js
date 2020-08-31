@@ -39,12 +39,12 @@ define([
 			this.offset = new Vector2(20, 10);
 			
 			/**
-			 * Options in this menu.
+			 * Items in this menu.
 			 * 
-			 * @attribute options
+			 * @attribute items
 			 * @type {Array}
 			 */
-			this.options = [];
+			this.items = [];
 		},
 
 
@@ -59,26 +59,26 @@ define([
 		},
 
 		/**
-		 * Remove option from context menu.
+		 * Remove item from context menu.
 		 *
-		 * @method removeOption
+		 * @method removeItem
 		 * @param {Number} index
 		 */
-		removeOption : function(index) {
-			if(index >= 0 && index < this.options.length)	{
-				this.options[index].destroy();
-				this.options.splice(index, 1);
+		removeItem : function(index) {
+			if(index >= 0 && index < this.items.length)	{
+				this.items[index].destroy();
+				this.items.splice(index, 1);
 			}
 		},
 
 		/**
-		 * Add new option to context menu
+		 * Add new item to context menu
 		 *
-		 * @method addOption
-		 * @param {String} name of the option
+		 * @method addItem
+		 * @param {String} name of the item
 		 * @param {Function} callback Callback function
 		 */
-		addOption : function(name, callback) {
+		addItem : function(name, callback) {
 			var button = new ButtonMenu(this);
 			button._elm.style.zIndex = "10000";
 			button.setText(name);
@@ -91,14 +91,14 @@ define([
 				self.destroy();
 			});
 
-			this.options.push(button);
+			this.items.push(button);
 		},
 
 		/**
 		 * Add new menu to context menu
 		 *
-		 * @method addOption
-		 * @param {String} name of the option.
+		 * @method addItem
+		 * @param {String} name of the item.
 		 * @return {DropdownMenu} The new menu created.
 		 */
 		addMenu : function(name) {
@@ -109,30 +109,30 @@ define([
 			menu.setAlignment(Text.LEFT);
 			menu.setMargin(25);
 
-			this.options.push(menu);
+			this.items.push(menu);
 
 			return menu;
 		},
 
 		/**
-		 * Update all options in the menu.
+		 * Update all items in the menu.
 		 * 
-		 * @method updateOptions
+		 * @method updateItems
 		 */
-		updateOptions : function() {
-			for(var i = 0; i < this.options.length; i++)
+		updateItems : function() {
+			for(var i = 0; i < this.items.length; i++)
 			{
-				this.options[i].size.copy(this.size);
-				this.options[i].position.set(0, this.size.y * i);
-				this.options[i].updateInterface();
+				this.items[i].size.copy(this.size);
+				this.items[i].position.set(0, this.size.y * i);
+				this.items[i].updateInterface();
 			}
 		},
 
 		updateSize : function()	{
 			this._elm.style.width = this.size.x + "px";
-			this._elm.style.height = (this.size.y * this.options.length) + "px";
+			this._elm.style.height = (this.size.y * this.items.length) + "px";
 
-			this.updateOptions();
+			this.updateItems();
 		},
 
 		updatePosition : function() {

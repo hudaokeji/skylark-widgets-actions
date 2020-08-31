@@ -31,7 +31,7 @@ define([
 		_construct : function (parent) {
 			Widget.prototype._construct.call(this, parent, "div");
 
-			this._buildTextSpan();
+			this._buildText();
 
 
 			this._elm.style.backgroundColor = Editor.theme.buttonColor;
@@ -41,7 +41,7 @@ define([
 			this.preventDragEvents();
 
 			/**
-			 * Panel element, where the options are stored.
+			 * Panel element, where the items are stored.
 			 *
 			 * This DOM element is added directly to the parent DOM element.
 			 *
@@ -92,17 +92,17 @@ define([
 			 * @type {Boolean}
 			 */
 			this.expanded = false;
-			this.optionsSize = new Vector2(150, 20);
+			this.itemsSize = new Vector2(150, 20);
 
 			/**
-			 * Options available in the dropdown.
+			 * Items available in the dropdown.
 			 *
-			 * Options are stored as: {button:button, value:object, name:string}
+			 * Items are stored as: {button:button, value:object, name:string}
 			 *
-			 * @attribute options
+			 * @attribute items
 			 * @type {Array}
 			 */
-			this.options = [];
+			this.items = [];
 
 			var self = this;
 
@@ -131,7 +131,7 @@ define([
 		},
 
 		/**
-		 * Set location to where options should open.
+		 * Set location to where items should open.
 		 *
 		 * @method setDirection
 		 */
@@ -176,9 +176,9 @@ define([
 		 * @param {Number} index
 		 */
 		removeOption : function(index) {
-			if(index >= 0 && index < this.options.length) {
-				this.options[index].destroy();
-				this.options.splice(index, 1);
+			if(index >= 0 && index < this.items.length) {
+				this.items[index].destroy();
+				this.items.splice(index, 1);
 			}
 		},
 
@@ -208,7 +208,7 @@ define([
 				button.setIcon(icon);
 			}
 
-			this.options.push(button);
+			this.items.push(button);
 
 			return button;
 		},
@@ -234,13 +234,13 @@ define([
 				menu.setIcon(icon);
 			}
 
-			this.options.push(menu);
+			this.items.push(menu);
 
 			return menu;
 		},
 
 		/** 
-		 * Update expanded state, position all options in this dropdown.
+		 * Update expanded state, position all items in this dropdown.
 		 * 
 		 * @method setExpanded
 		 * @param {Boolean} expanded If true the menu will be expanded.
@@ -256,7 +256,7 @@ define([
 					this.panel._elm.style.left = this.position.x + "px";
 
 					//var out = DOMUtils.checkBorder(this.panel);
-					var out = geom.testAsis(this.panel);
+					var out = geom.testAxis(this.panel);
 
 					if(out.y !== 0)	{
 						this.panel._elm.style.top = null;
@@ -270,7 +270,7 @@ define([
 					this.panel._elm.style.left = this.position.x + "px";
 
 					//var out = DOMUtils.checkBorder(this.panel);
-					var out = geom.testAsis(this.panel);
+					var out = geom.testAxis(this.panel);
 					if(out.y !== 0)
 					{
 						this.panel._elm.style.bottom = null;
@@ -287,7 +287,7 @@ define([
 					this.panel._elm.style.left = (this.position.x + this.size.x) + "px";
 
 					//var out = DOMUtils.checkBorder(this.panel);
-					var out = geom.testAsis(this.panel);
+					var out = geom.testAxis(this.panel);
 					if(out.x !== 0)
 					{
 						this.panel._elm.style.left = (this.position.x - this.size.x) + "px"; 
@@ -303,7 +303,7 @@ define([
 					this.panel._elm.style.left = (this.position.x - this.size.x) + "px";
 
 					//var out = DOMUtils.checkBorder(this.panel);
-					var out = geom.testAsis(this.panel);
+					var out = geom.testAxis(this.panel);
 					if(out.x !== 0)
 					{
 						this.panel._elm.style.left = (this.position.x + this.size.x) + "px";
@@ -319,19 +319,19 @@ define([
 		},
 
 		/**
-		 * Update all options in the menu.
+		 * Update all items in the menu.
 		 * 
-		 * @method updateOptions
+		 * @method updateItems
 		 */
-		updateOptions : function() {
-			for(var i = 0; i < this.options.length; i++) {
-				this.options[i].size.set(this.optionsSize.x, this.optionsSize.y);
-				this.options[i].position.set(0, this.optionsSize.y * i);
-				this.options[i].updateInterface();
+		updateItems : function() {
+			for(var i = 0; i < this.items.length; i++) {
+				this.items[i].size.set(this.itemsSize.x, this.itemsSize.y);
+				this.items[i].position.set(0, this.itemsSize.y * i);
+				this.items[i].updateInterface();
 			}
 
 			this.panel._elm.style.width = this.size.x + "px";
-			this.panel._elm.style.height = (this.optionsSize.y * this.options.length) + "px";
+			this.panel._elm.style.height = (this.itemsSize.y * this.items.length) + "px";
 		},
 
 		destroy : function() {
@@ -343,7 +343,7 @@ define([
 		updateSize : function() {
 //			Text.prototype.updateSize.call(this);
 
-			this.updateOptions();
+			this.updateItems();
 		},
 
 

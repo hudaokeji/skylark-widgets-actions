@@ -1,10 +1,12 @@
 define([
 	"skylark-langx-numerics/Vector2",
 	"skylark-widgets-base/Widget",
+	"../actions",
 	"./ButtonImage"
 ],function(
 	Vector2,
-	Element,
+	Widget,
+	actions,
 	ButtonImage
 ){
 	"use strict";
@@ -34,36 +36,36 @@ define([
 			this.panel.element.style.zIndex = "250";
 
 			/** 
-			 * List of the options in this panel.
+			 * List of the items in this panel.
 			 *
-			 * @attribute options
+			 * @attribute items
 			 * @type {Array}
 			 */
-			this.options = [];
+			this.items = [];
 
 			/**
-			 * Number of maximum options per row
+			 * Number of maximum items per row
 			 *
-			 * @attribute optionsPerLine
+			 * @attribute itemsPerLine
 			 * @type {Number}
 			 */
-			this.optionsPerLine = 3;
+			this.itemsPerLine = 3;
 			
 			/**
 			 * Size of each option, also affects the size of the panel.
 			 *
-			 * @attribute optionsSize
+			 * @attribute itemsSize
 			 * @type {Vector2}
 			 */
-			this.optionsSize = new Vector2(40, 40);
+			this.itemsSize = new Vector2(40, 40);
 
 			/**
-			 * Scale of the inner icon of the options created from the addOption() method.
+			 * Scale of the inner icon of the items created from the addItem() method.
 			 *
-			 * @attribute optionsScale
+			 * @attribute itemsScale
 			 * @type {Vector2}
 			 */
-			this.optionsScale = new Vector2(0.7, 0.7);
+			this.itemsScale = new Vector2(0.7, 0.7);
 
 			/**
 			 * Indicates if the button drawer panel is visible.
@@ -99,12 +101,12 @@ define([
 
 
 		clear : function(){
-			for(var i = 0; i < this.options.length; i++)
+			for(var i = 0; i < this.items.length; i++)
 			{
-				this.options[i].destroy();
+				this.items[i].destroy();
 			}
 			
-			this.options = [];
+			this.items = [];
 		},
 
 		/**
@@ -121,24 +123,24 @@ define([
 		/** 
 		 * Insert new option from already created element.
 		 *
-		 * @method insertOption
+		 * @method insertItem
 		 * @param {Widget} Widget of the option to be inserted in the drawer
 		 */
-		insertOption : function(element){
+		insertItem : function(element){
 			element.attachTo(this.panel);
-			this.options.push(element);
+			this.items.push(element);
 		},
 
 
 		/**
 		 * Add new option to the menu.
 		 * 
-		 * @method addOption
+		 * @method addItem
 		 * @param {String} image
 		 * @param {Function} callback
 		 * @param {String} altText
 		 */
-		addOption : function(image, callback, altText){
+		addItem : function(image, callback, altText){
 			var self = this;
 
 			var button = new ButtonImage(this.panel);
@@ -155,64 +157,91 @@ define([
 				button.setAltText(altText);
 			}
 
-			this.options.push(button);
+			this.items.push(button);
 		},
 
 		/**
 		 * Remove an option from the menu.
 		 *
-		 * @method removeOption
+		 * @method removeItem
 		 * @param {Number} index
 		 */
-		removeOption : function(index) 	{
-			if(index >= 0 && index < this.options.length)
+		removeItem : function(index) 	{
+			if(index >= 0 && index < this.items.length)
 			{
-				this.options[index].destroy();
-				this.options.splice(index, 1);
+				this.items[index].destroy();
+				this.items.splice(index, 1);
 			}
 		},
 
 		/**
-		 * Updates drawer panel size based on the number of options available.
+		 * Updates drawer panel size based on the number of items available.
 		 * 
 		 * @method updatePanelSize
 		 */
-		_updatePanelSize : function()	{
-			var optionsPerLine = (this.options.length < this.optionsPerLine) ? this.options.length : this.optionsPerLine;
+		updatePanelSize : function()	{
+			var itemsPerLine = (this.items.length < this.itemsPerLine) ? this.items.length : this.itemsPerLine;
 
-			this.panel.size.x = (this.optionsSize.x * optionsPerLine);
-			this.panel.size.y = (this.optionsSize.y * (Math.floor((this.options.length - 1) / optionsPerLine) + 1));
+			this.panel.size.x = (this.itemsSize.x * itemsPerLine);
+			this.panel.size.y = (this.itemsSize.y * (Math.floor((this.items.length - 1) / itemsPerLine) + 1));
 			this.panel.updateSize();
 
-			this.panel.position.set(this.optionsSize.x, 0);
+			this.panel.position.set(this.itemsSize.x, 0);
 			this.panel.updatePosition();
 		},
 
 		/**
-		 * Update drawer options position and size.
+		 * Update drawer items position and size.
 		 *
-		 * Should be called after change in options displacement variables).
+		 * Should be called after change in items displacement variables).
 		 *
-		 * @method updateOptions
+		 * @method updateItems
 		 */
-		_updateOptions : function()	{
+		updateItems : function()	{
 			this.updatePanelSize();
 
-			var optionsPerLine = (this.options.length < this.optionsPerLine) ? this.options.length : this.optionsPerLine;
+			var itemsPerLine = (this.items.length < this.itemsPerLine) ? this.items.length : this.itemsPerLine;
 
-			for(var i = 0; i < this.options.length; i++)
+			for(var i = 0; i < this.items.length; i++)
 			{
-				this.options[i].size.set(this.optionsSize.x, this.optionsSize.y);
-				this.options[i].position.x = this.optionsSize.x * (i % optionsPerLine);
-				this.options[i].position.y = this.optionsSize.y * Math.floor(i / optionsPerLine);
-				this.options[i].updateInterface();
+				this.items[i].size.set(this.itemsSize.x, this.itemsSize.y);
+				this.items[i].position.x = this.itemsSize.x * (i % itemsPerLine);
+				this.items[i].position.y = this.itemsSize.y * Math.floor(i / itemsPerLine);
+				this.items[i].updateInterface();
 			}
 		},
 
-		_updateVisibility : function()	{
+		updateVisibility : function()	{
 			this._elm.style.display = this.visible ? "block" : "none";
+		},
+
+
+		optionsSize : {
+			get : function() {
+				return this.itemsSize;
+			},
+
+			set : function(v) {
+				this.itemsSize = v
+			}
+		},
+
+		optionsPerLine : {
+			get : function() {
+				return this.itemsPerLine;
+			},
+
+			set : function(v) {
+				this.itemsPerLine = v
+			}
 		}
 	});
+
+	
+	ButtonDrawer.prototype.addOption = ButtonDrawer.prototype.addItem;
+	ButtonDrawer.prototype.insertOption = ButtonDrawer.prototype.insertItem;
+	ButtonDrawer.prototype.updateOptions = ButtonDrawer.prototype.updateItems;
+	ButtonDrawer.prototype.removeOption = ButtonDrawer.prototype.reomveItem;
 
 
 	return actions.buttons.ButtonDrawer = ButtonDrawer;

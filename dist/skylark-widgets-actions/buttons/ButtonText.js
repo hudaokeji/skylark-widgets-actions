@@ -5,5 +5,5 @@
  * @link https://github.com/skylark-widgets/skylark-widgets-actions/
  * @license MIT
  */
-define(["skylark-widgets-base/mixins/TextMixin","../actions","./Button"],function(t,n,i){"use strict";var o=i.inherit({_construct:function(t){i.prototype._construct.call(this,t);var n=this.getSkin();this._buildTextSpan(),this.setColor(n.buttonColor,n.buttonOverColor)},...t});return n.buttons.ButtonText=o});
+define(["skylark-widgets-base/mixins/TextMixin","../actions","./Button"],function(t,i,n){"use strict";var o=n.inherit({_construct:function(t){n.prototype._construct.call(this,t);var i=this.getSkin();this._buildText(),this.setColor(i.buttonColor,i.buttonOverColor)},...t});return i.buttons.ButtonText=o});
 //# sourceMappingURL=../sourcemaps/buttons/ButtonText.js.map

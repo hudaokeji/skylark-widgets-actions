@@ -43,7 +43,7 @@ define([
 			this.setAlignment(TextMixin.CENTER);
 			*/
 
-			this._buildTextSpan();
+			this._buildText();
 
 			//this.setColor(Editor.theme.buttonColor, Editor.theme.buttonOverColor);
 			this.setColor(skin.buttonColor, skin.buttonOverColor);
