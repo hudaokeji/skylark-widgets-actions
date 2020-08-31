@@ -1,0 +1,9 @@
+/**
+ * skylark-widgets-actions - The skylark action widgets library
+ * @author Hudaokeji, Inc.
+ * @version v0.9.0
+ * @link https://github.com/skylark-widgets/skylark-widgets-actions/
+ * @license MIT
+ */
+define(["skylark-langx-numbers/Vector2","skylark-domx-geom","skylark-widgets-base/Widget","../actions","./ButtonMenu","./DropdownMenu"],function(t,s,i,e,o,n){"use strict";var h=i.inherit({_construct:function(s){i.prototype._construct.call(this,s,"div");var e=this;this._elm.style.overflow="visible",this._elm.style.zIndex="300",this._elm.onmouseleave=function(){e.destroy()},this.offset=new t(20,10),this.options=[]},setText:function(t){this.text.setText(t)},removeOption:function(t){t>=0&&t<this.options.length&&(this.options[t].destroy(),this.options.splice(t,1))},addOption:function(t,s){var i=new o(this);i._elm.style.zIndex="10000",i.setText(t),i.setAlignment(Text.LEFT),i.position.x=25;var e=this;i.setOnClick(function(){s(),e.destroy()}),this.options.push(i)},addMenu:function(t){var s=new n(this);return s.setText(t),s.setDirection(n.LEFT),s.showArrow(),s.setAlignment(Text.LEFT),s.setMargin(25),this.options.push(s),s},updateOptions:function(){for(var t=0;t<this.options.length;t++)this.options[t].size.copy(this.size),this.options[t].position.set(0,this.size.y*t),this.options[t].updateInterface()},updateSize:function(){this._elm.style.width=this.size.x+"px",this._elm.style.height=this.size.y*this.options.length+"px",this.updateOptions()},updatePosition:function(){this._elm.style.top=this.position.y-this.offset.y+"px",this._elm.style.left=this.position.x-this.offset.x+"px";var t=s.testAxis(this._elm);0!==t.x&&(this._elm.style.left=this.position.x+this.offset.x-this.size.x+"px"),0!==t.y&&(this._elm.style.top=this.position.y-this.offset.y-t.y+"px")}});return e.menus.ContextMenu=h});
+//# sourceMappingURL=../sourcemaps/menus/ContextMenu.js.map
