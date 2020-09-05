@@ -21,11 +21,11 @@ define([
 
 			var skin = this.getSkin();
 
-			/*
 			//this._elm.style.color = Editor.theme.textColor;
 			this._elm.style.color = skin.textColor;
 			this._elm.style.display = "flex";
 			
+			/*
 			//Span
 			this.span = document.createElement("span");
 			this.span.style.overflow = "hidden";

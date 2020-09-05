@@ -27,16 +27,18 @@ define([
 
 
 	var DropdownMenu = Widget.inherit({
+		...TextMixin,
 
 		_construct : function (parent) {
 			Widget.prototype._construct.call(this, parent, "div");
 
-			this._buildText();
-
+			var skin = this.getSkin();
 
 			this._elm.style.backgroundColor = Editor.theme.buttonColor;
 			this._elm.style.cursor = "pointer";
 			this._elm.style.pointerEvents = "auto";
+
+			this._buildText();
 
 			this.preventDragEvents();
 
@@ -54,7 +56,7 @@ define([
 			this.panel._elm.style.zIndex = "300";
 
 			/**
-			 * Option icon image, the element is only created when a icon is set.
+			 * Item icon image, the element is only created when a icon is set.
 			 *
 			 * @attribute icon
 			 * @type {DOM}
@@ -75,7 +77,8 @@ define([
 			this.arrow.style.width = "12px";
 			this.arrow.style.height = "12px";
 			//this.arrow.src = Global.FILE_PATH + "icons/misc/arrow_right.png";
-			this._elm.appendChild(this.arrow);
+			this.arrow.src = skin.arrowRightImageUrl;
+			this._elm.appendChild(this.arrow);	
 
 			/**
 			 * Direction to open the dropdown.
@@ -109,13 +112,15 @@ define([
 			this._elm.onmouseenter = function()
 			{
 				self.setExpanded(true);
-				self._elm.style.backgroundColor = Editor.theme.buttonOverColor;
+				//self._elm.style.backgroundColor = Editor.theme.buttonOverColor;
+				self._elm.style.backgroundColor = skin.buttonOverColor;
 			};
 
 			this._elm.onmouseleave = function()
 			{
 				self.setExpanded(false);
-				self._elm.style.backgroundColor = Editor.theme.buttonColor;
+				//self._elm.style.backgroundColor = Editor.theme.buttonColor;
+				self._elm.style.backgroundColor = skin.buttonColor;
 			};
 			
 			this.panel._elm.onmouseenter = function()
@@ -170,12 +175,12 @@ define([
 		},
 
 		/**
-		 * Remove option from menu.
+		 * Remove item from menu.
 		 *
-		 * @method removeOption
+		 * @method removeItem
 		 * @param {Number} index
 		 */
-		removeOption : function(index) {
+		removeItem : function(index) {
 			if(index >= 0 && index < this.items.length) {
 				this.items[index].destroy();
 				this.items.splice(index, 1);
@@ -183,19 +188,19 @@ define([
 		},
 
 		/**
-		 * Add new option to menu
+		 * Add new item to menu
 		 *
-		 * @method addOption
-		 * @param {String} name of the option
+		 * @method addItem
+		 * @param {String} name of the item
 		 * @param {Function} callback Callback function
 		 * @param {String} icon Icon URL.
-		 * @return {ButtonMenu} Button created for the new option.
+		 * @return {ButtonMenu} Button created for the new item.
 		 */
-		addOption : function(name, callback, icon) {
+		addItem : function(name, callback, icon) {
 			var button = new ButtonMenu(this.panel);
 			button._elm.style.zIndex = "200";
 			button.setText(name);
-			button.setAlignment(Text.LEFT);
+			button.setAlignment(TextMixin.LEFT);
 			button.position.set(25, 0);
 
 			var self = this;
@@ -216,8 +221,8 @@ define([
 		/**
 		 * Add new menu to menu.
 		 *
-		 * @method addOption
-		 * @param {String} name Name of the option.
+		 * @method addItem
+		 * @param {String} name Name of the item.
 		 * @param {String} icon Optional icon, image URL.
 		 * @return {DropdownMenu} The new menu created.
 		 */
@@ -226,7 +231,7 @@ define([
 			menu.setText(name);
 			menu.setDirection(DropdownMenu.LEFT);
 			menu.showArrow();
-			menu.setAlignment(Text.LEFT);
+			menu.setAlignment(TextMixin.LEFT);
 			menu.setMargin(25);
 			
 			if(icon !== undefined)
@@ -341,13 +346,11 @@ define([
 		},
 
 		updateSize : function() {
-//			Text.prototype.updateSize.call(this);
+			TextMixin.updateSize.call(this);
 
 			this.updateItems();
-		},
+		}
 
-
-		...TextMixin
 
 	});
 
@@ -357,6 +360,9 @@ define([
 	DropdownMenu.LEFT = 2;
 	DropdownMenu.RIGHT = 3;
 
+
+	DropdownMenu.prototype.addOption = DropdownMenu.prototype.addItem;
+	DropdownMenu.prototype.updateOptions = DropdownMenu.prototype.updateItems;
 
 
 	return DropdownMenu;
