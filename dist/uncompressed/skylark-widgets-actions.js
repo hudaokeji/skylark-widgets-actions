@@ -1235,6 +1235,10 @@ define('skylark-widgets-actions/menus/ContextMenu',[
 		}
 	});
 
+	ContextMenu.prototype.addOption = ContextMenu.prototype.addItem;
+	ContextMenu.prototype.removeOption = ContextMenu.prototype.removeItem;
+	ContextMenu.prototype.updateOption = ContextMenu.prototype.updateItems;
+
 	return actions.menus.ContextMenu = ContextMenu;
 });
 define('skylark-widgets-actions/main',[

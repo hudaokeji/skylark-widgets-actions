@@ -155,5 +155,9 @@ define([
 		}
 	});
 
+	ContextMenu.prototype.addOption = ContextMenu.prototype.addItem;
+	ContextMenu.prototype.removeOption = ContextMenu.prototype.removeItem;
+	ContextMenu.prototype.updateOption = ContextMenu.prototype.updateItems;
+
 	return actions.menus.ContextMenu = ContextMenu;
 });
