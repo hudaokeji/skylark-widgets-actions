@@ -3,14 +3,16 @@ define([
 	"skylark-domx-geom",
 
 	"skylark-widgets-base/Widget",
+	"skylark-widgets-base/panels/Panel",
 	"skylark-widgets-base/mixins/TextMixin",
 
 	"./ButtonMenu"
 ],function(
 	Vector2,
 	geom,
-	
+
 	Widget,
+	Panel,
 	TextMixin,
 
 	ButtonMenu
@@ -50,7 +52,7 @@ define([
 			 * @attribute panel
 			 * @type {DOM}
 			 */
-			this.panel = new Widget(parent, "div");
+			this.panel = new Panel(parent, "div");
 			this.panel._elm.style.overflow = "visible";
 			this.panel._elm.style.display = "none";
 			this.panel._elm.style.zIndex = "300";

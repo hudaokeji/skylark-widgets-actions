@@ -265,12 +265,12 @@ define('skylark-widgets-actions/buttons/ButtonImage',[
 });
 define('skylark-widgets-actions/buttons/ButtonDrawer',[
 	"skylark-langx-numerics/Vector2",
-	"skylark-widgets-base/Widget",
+	"skylark-widgets-base/panels/Panel",
 	"../actions",
 	"./ButtonImage"
 ],function(
 	Vector2,
-	Widget,
+	Panel,
 	actions,
 	ButtonImage
 ){
@@ -290,14 +290,18 @@ define('skylark-widgets-actions/buttons/ButtonDrawer',[
 		_construct : function (parent) {
 			ButtonImage.prototype._construct.call(this, parent);
 
+			var skin = this.getSkin();
 
 			this._elm.style.zIndex = "200";
-			this._elm.style.backgroundColor = Editor.theme.buttonColor;
+			//this._elm.style.backgroundColor = Editor.theme.buttonColor;
+			this._elm.style.backgroundColor = skin.buttonColor;
 			this._elm.style.overflow = "visible";
 
-			this.panel = new Widget(this, "div");
+			this.panel = new Panel(this);
+			this.panel.element.style.position = "absolute";
 			this.panel.element.style.overflow = "visible";
-			this.panel.element.style.backgroundColor = Editor.theme.barColor;
+			//this.panel.element.style.backgroundColor = Editor.theme.barColor;
+			this.panel.element.style.backgroundColor = skin.barColor;
 			this.panel.element.style.zIndex = "250";
 
 			/** 
@@ -345,12 +349,14 @@ define('skylark-widgets-actions/buttons/ButtonDrawer',[
 
 			this._elm.onmouseenter = function()
 			{
-				self.element.style.backgroundColor = Editor.theme.buttonOverColor;
+				//self.element.style.backgroundColor = Editor.theme.buttonOverColor;
+				self.element.style.backgroundColor = skin.buttonOverColor;
 				self.setExpanded(true);
 			};
 			this._elm.onmouseleave = function()
 			{
-				self.element.style.backgroundColor = Editor.theme.buttonColor;
+				//self.element.style.backgroundColor = Editor.theme.buttonColor;
+				self.element.style.backgroundColor = skin.buttonColor;
 				self.setExpanded(false);
 			};
 
@@ -714,14 +720,16 @@ define('skylark-widgets-actions/menus/DropdownMenu',[
 	"skylark-domx-geom",
 
 	"skylark-widgets-base/Widget",
+	"skylark-widgets-base/panels/Panel",
 	"skylark-widgets-base/mixins/TextMixin",
 
 	"./ButtonMenu"
 ],function(
 	Vector2,
 	geom,
-	
+
 	Widget,
+	Panel,
 	TextMixin,
 
 	ButtonMenu
@@ -761,7 +769,7 @@ define('skylark-widgets-actions/menus/DropdownMenu',[
 			 * @attribute panel
 			 * @type {DOM}
 			 */
-			this.panel = new Widget(parent, "div");
+			this.panel = new Panel(parent, "div");
 			this.panel._elm.style.overflow = "visible";
 			this.panel._elm.style.display = "none";
 			this.panel._elm.style.zIndex = "300";
@@ -1081,7 +1089,7 @@ define('skylark-widgets-actions/menus/DropdownMenu',[
 define('skylark-widgets-actions/menus/ContextMenu',[
 	"skylark-langx-numerics/Vector2",
 	"skylark-domx-geom",
-	"skylark-widgets-base/Widget",
+	"skylark-widgets-base/panels/Panel",
 	"../actions",
 	"./ButtonMenu",
 	"./DropdownMenu"
@@ -1089,7 +1097,7 @@ define('skylark-widgets-actions/menus/ContextMenu',[
 	Vector2,
 	geom,
 
-	Widget,
+	Panel,
 	actions,
 	ButtonMenu,
 	DropdownMenu
@@ -1100,13 +1108,13 @@ define('skylark-widgets-actions/menus/ContextMenu',[
 	 * Context menu widget.
 	 * 
 	 * @class ContextMenu
-	 * @extends {Widget}
+	 * @extends {Panel}
 	 * @param {Widget} parent Parent widget.
 	 */
-	var ContextMenu = Widget.inherit({
+	var ContextMenu = Panel.inherit({
 
 		_construct : function (parent) {	
-			Widget.prototype._construct.call(this, parent, "div");
+			Panel.prototype._construct.call(this, parent, "div");
 
 			var self = this;
 

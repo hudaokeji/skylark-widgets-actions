@@ -1,11 +1,11 @@
 define([
 	"skylark-langx-numerics/Vector2",
-	"skylark-widgets-base/Widget",
+	"skylark-widgets-base/panels/Panel",
 	"../actions",
 	"./ButtonImage"
 ],function(
 	Vector2,
-	Widget,
+	Panel,
 	actions,
 	ButtonImage
 ){
@@ -25,14 +25,18 @@ define([
 		_construct : function (parent) {
 			ButtonImage.prototype._construct.call(this, parent);
 
+			var skin = this.getSkin();
 
 			this._elm.style.zIndex = "200";
-			this._elm.style.backgroundColor = Editor.theme.buttonColor;
+			//this._elm.style.backgroundColor = Editor.theme.buttonColor;
+			this._elm.style.backgroundColor = skin.buttonColor;
 			this._elm.style.overflow = "visible";
 
-			this.panel = new Widget(this, "div");
+			this.panel = new Panel(this);
+			this.panel.element.style.position = "absolute";
 			this.panel.element.style.overflow = "visible";
-			this.panel.element.style.backgroundColor = Editor.theme.barColor;
+			//this.panel.element.style.backgroundColor = Editor.theme.barColor;
+			this.panel.element.style.backgroundColor = skin.barColor;
 			this.panel.element.style.zIndex = "250";
 
 			/** 
@@ -80,12 +84,14 @@ define([
 
 			this._elm.onmouseenter = function()
 			{
-				self.element.style.backgroundColor = Editor.theme.buttonOverColor;
+				//self.element.style.backgroundColor = Editor.theme.buttonOverColor;
+				self.element.style.backgroundColor = skin.buttonOverColor;
 				self.setExpanded(true);
 			};
 			this._elm.onmouseleave = function()
 			{
-				self.element.style.backgroundColor = Editor.theme.buttonColor;
+				//self.element.style.backgroundColor = Editor.theme.buttonColor;
+				self.element.style.backgroundColor = skin.buttonColor;
 				self.setExpanded(false);
 			};
 

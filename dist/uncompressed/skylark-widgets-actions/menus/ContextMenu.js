@@ -1,7 +1,7 @@
 define([
 	"skylark-langx-numerics/Vector2",
 	"skylark-domx-geom",
-	"skylark-widgets-base/Widget",
+	"skylark-widgets-base/panels/Panel",
 	"../actions",
 	"./ButtonMenu",
 	"./DropdownMenu"
@@ -9,7 +9,7 @@ define([
 	Vector2,
 	geom,
 
-	Widget,
+	Panel,
 	actions,
 	ButtonMenu,
 	DropdownMenu
@@ -20,13 +20,13 @@ define([
 	 * Context menu widget.
 	 * 
 	 * @class ContextMenu
-	 * @extends {Widget}
+	 * @extends {Panel}
 	 * @param {Widget} parent Parent widget.
 	 */
-	var ContextMenu = Widget.inherit({
+	var ContextMenu = Panel.inherit({
 
 		_construct : function (parent) {	
-			Widget.prototype._construct.call(this, parent, "div");
+			Panel.prototype._construct.call(this, parent, "div");
 
 			var self = this;
 
