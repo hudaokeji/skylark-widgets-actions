@@ -1,24 +1,24 @@
 {
-  "name": "skylark-widgets-actions",
-  "description": "The skylark action widgets library",
+  "name": "skylark-widgets-buttons",
+  "description": "The skylark button widgets library",
   "version": "0.9.0",
   "keywords": [
     "skylark",
     "skylarkui",
-    "actions",
+    "buttons",
     "widget"
   ],
-  "homepage": "https://github.com/skylark-widgets/skylark-widgets-actions/",
+  "homepage": "https://github.com/skylark-widgets/skylark-widgets-buttons/",
   "author": "Hudaokeji, Inc.",
   "scripts": {
     "build": "slib build ."
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/skylark-widgets/skylark-widgets-actions.git"
+    "url": "https://github.com/skylark-widgets/skylark-widgets-buttons.git"
   },
   "bugs": {
-    "url": "https://github.com/skylark-widgets/skylark-widgets-actions/issues"
+    "url": "https://github.com/skylark-widgets/skylark-widgets-buttons/issues"
   },
   "license": "MIT",
   "dependencies": {
