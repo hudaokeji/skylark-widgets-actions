@@ -133,7 +133,7 @@ define([
 		 * @param {Widget} Widget of the option to be inserted in the drawer
 		 */
 		insertItem : function(element){
-			element.attachTo(this.panel);
+			element.setParent(this.panel);
 			this.items.push(element);
 		},
 
