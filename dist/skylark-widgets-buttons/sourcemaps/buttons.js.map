@@ -1,1 +1,0 @@
-{"version":3,"sources":["buttons.js"],"names":["define","skylark","attach"],"mappings":";;;;;;;AAAAA,QACC,yBACC,SAASC,GAGV,OAAOA,EAAQC,OAAO","file":"../buttons.js","sourcesContent":["define([\r\n\t\"skylark-langx/skylark\"\r\n],function(skylark) {\r\n\r\n\r\n\treturn skylark.attach(\"widgets.buttons\",{});\r\n\r\n});\r\n\r\n"]}
